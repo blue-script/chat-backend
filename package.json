@@ -1,0 +1,30 @@
+{
+  "name": "chat-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch-dev": "tsc -w",
+    "dev": "nodemon --inspect ./dist/app.js",
+    "start-dev": "concurrently \"yarn dev\" \"yarn watch-dev\"",
+    "start": "node dist/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.0",
+    "ts-jest-mock-import-meta": "^1.2.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
+    "express": "4",
+    "socket.io": "^4.7.5",
+    "ts-node": "^10.9.2"
+  }
+}
