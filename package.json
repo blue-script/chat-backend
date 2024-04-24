@@ -7,9 +7,9 @@
   "scripts": {
     "build": "tsc",
     "watch-dev": "tsc -w",
-    "dev": "nodemon --inspect ./dist/app.js",
+    "dev": "nodemon --inspect dist/index.js",
     "start-dev": "concurrently \"yarn dev\" \"yarn watch-dev\"",
-    "start": "node dist/app.js"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
