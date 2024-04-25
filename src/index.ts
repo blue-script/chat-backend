@@ -6,17 +6,15 @@ import {Server} from 'socket.io'
 
 const index = express()
 const server = createServer(index)
-const io = new Server(server)
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+})
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
-
-index.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  next();
-});
 
 index.get('/', (req, res) => {
   // res.sendFile(join(__dirname, 'index.html'));
