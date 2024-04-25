@@ -116,6 +116,7 @@
     /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "./dist/*.js"
+    "./dist/*.js",
+    "*",
   ]
 }
