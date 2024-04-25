@@ -25,7 +25,7 @@ const usersState = new Map()
 io.on('connection', (socket) => {
   usersState.set(socket, {id: new Date().getTime().toString(), name: 'anonym'})
 
-  socket.on('disconnect', () => {
+  io.on('disconnect', () => {
     usersState.delete(socket)
   })
 
@@ -41,8 +41,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('user-typing', usersState.get(socket))
   })
 
-  socket.on('client-message-sent', (message: string) => {
-    if (typeof message !== 'string') return
+  socket.on('client-message-sent', (message: string, successFn) => {
+    if (typeof message !== 'string' || message.length > 20) {
+      successFn('Message length should be less than 20 chars')
+      return
+    }
 
     const user = usersState.get(socket)
 
@@ -50,9 +53,14 @@ io.on('connection', (socket) => {
     messages.push(messageItem)
 
     socket.emit('new-message-sent', messageItem)
+
+    successFn(null)
   })
 
-  socket.emit('init-messages-published', messages)
+  socket.emit('init-messages-published', messages, (data: string) => {
+    console.log('INIT MESSAGES RECEIVED ' + data)
+  })
+
 })
 
 const PORT = process.env.PORT || 3009
