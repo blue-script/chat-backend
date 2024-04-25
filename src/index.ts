@@ -37,6 +37,9 @@ io.on('connection', (socket) => {
     user.name = name
   })
 
+  socket.on('client-typed',( )=>{
+    socket.emit('user-typing', usersState.get(socket))
+
   socket.on('client-message-sent', (message: string) => {
     if (typeof message !== 'string') return
 
