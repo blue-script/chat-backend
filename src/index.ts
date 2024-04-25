@@ -16,29 +16,30 @@ index.get('/', (req, res) => {
 })
 
 const messages = [
-  {id: '2342', message: 'hello, Serg', user: {id: 'asdfdfsd', name: 'Aleks'}},
-  {id: '2123', message: 'hello, Aleks', user: {id: 'asdfsdf', name: 'Serg'}}
+  {id: '123', message: 'hello, Serg', user: {id: '789', name: 'Aleks'}},
+  {id: '456', message: 'hello, Aleks', user: {id: '10111', name: 'Serg'}}
 ]
 
 const usersState = new Map()
 
 io.on('connection', (socket) => {
-  usersState.set(socket, {id: new Date().getTime().toString(), name: "anonym"} )
+  usersState.set(socket, {id: new Date().getTime().toString(), name: 'anonym'})
 
-  socket.on('disconnect', ()=>{
+  socket.on('disconnect', () => {
     usersState.delete(socket)
   })
 
 
-  socket.on('client-name-sent',( name: string)=>{
+  socket.on('client-name-sent', (name: string) => {
     if (typeof name !== 'string') return
 
     const user = usersState.get(socket)
     user.name = name
   })
 
-  socket.on('client-typed',( )=>{
-    socket.emit('user-typing', usersState.get(socket))
+  socket.on('client-typed', () => {
+    socket.broadcast.emit('user-typing', usersState.get(socket))
+  })
 
   socket.on('client-message-sent', (message: string) => {
     if (typeof message !== 'string') return
