@@ -1,7 +1,5 @@
 import express from 'express'
 import {createServer} from 'node:http'
-import {fileURLToPath} from 'node:url'
-import {dirname, join} from 'node:path'
 import {Server} from 'socket.io'
 
 const index = express()
@@ -14,16 +12,25 @@ const io = new Server(server, {
   }
 })
 
-// const __dirname = dirname(fileURLToPath(import.meta.url));
-
 index.get('/', (req, res) => {
-  // res.sendFile(join(__dirname, 'index.html'));
   res.send('Hello, it`s me ')
 })
 
+const messages = [
+  {id: '2342', message: 'hello, Serg', user: {id: 'asdfdfsd', name: 'Aleks'}},
+  {id: '2123', message: 'hello, Aleks', user: {id: 'asdfsdf', name: 'Serg'}}
+]
+
 io.on('connection', (socket) => {
-  socket.handshake.headers.origin = 'http://localhost:3000'
   console.log('a user connected')
+
+  socket.on('client-message-sent', (message: string) => {
+    const messageItem = {id: '2342' + new Date().getTime(), message: message, user: {id: 'asdfdfsd', name: 'Aleks'}}
+    messages.push(messageItem)
+    socket.emit('new-message-sent', messageItem)
+  })
+
+  socket.emit('init-messages-published', messages)
 })
 
 const PORT = process.env.PORT || 3009
